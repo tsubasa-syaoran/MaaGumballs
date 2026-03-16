@@ -203,6 +203,8 @@
         {
             "name": "刷竞技场",
             "entry": "JJC",
+            "repeatable": true,
+            "repeat_count": 1,
             "option": [
                 "自动肉鸽时使用钻石购买体力"
             ],
@@ -273,6 +275,8 @@
         {
             "name": "马尔斯",
             "entry": "Mars",
+            "repeatable": true,
+            "repeat_count": 1,
             "option": [
                 "自动肉鸽时使用钻石购买体力",
                 "是否启用名导心得",
@@ -395,7 +399,7 @@
             ]
         },
         {
-            "name": "时空域(测试)",
+            "name": "时空域",
             "entry": "TSD_Entry",
             "option": [
                 "是否探索废墟等事件",
