@@ -190,6 +190,17 @@
             ]
         },
         {
+            "name": "自动购买金币",
+            "entry": "DailyGoldCoin",
+            "doc": [
+                "### 自动购买金币说明",
+                "   - 自动购买10个土罐,每个土罐50000金币, 50w一次。"
+            ],
+            "option": [
+                "购买金币次数"
+            ]
+        },
+        {
             "name": "刷竞技场",
             "entry": "JJC",
             "option": [
@@ -260,7 +271,7 @@
             "doc": "该节点不点称号,仅吃狼人药剂叫狗"
         },
         {
-            "name": "马尔斯(测试)",
+            "name": "马尔斯",
             "entry": "Mars",
             "option": [
                 "自动肉鸽时使用钻石购买体力",
@@ -1299,6 +1310,42 @@
                         "TSD_Explore": {
                             "custom_action_param": {
                                 "fleet_nums": 4
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "购买金币次数": {
+            "default_case": "8",
+            "type": "select",
+            "cases": [
+                {
+                    "name": "8",
+                    "pipeline_override": {
+                        "DailyGoldCoin_BuyClayPot_Costing": {
+                            "custom_action_param": {
+                                "times": 8
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "10",
+                    "pipeline_override": {
+                        "DailyGoldCoin_BuyClayPot_Costing": {
+                            "custom_action_param": {
+                                "times": 10
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "15",
+                    "pipeline_override": {
+                        "DailyGoldCoin_BuyClayPot_Costing": {
+                            "custom_action_param": {
+                                "times": 15
                             }
                         }
                     }

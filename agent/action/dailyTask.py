@@ -5,6 +5,7 @@ from maa.custom_action import CustomAction
 from utils import logger
 
 import time
+import json
 
 
 @AgentServer.custom_action("DailyTaskSelect")
@@ -101,4 +102,22 @@ class WeeklyRaidFighting(CustomAction):
                     context.run_task("WeeklyRaid_Attack")
             context.run_task("WeeklyRaid_SwipeToRight")
 
+        return CustomAction.RunResult(success=True)
+
+
+@AgentServer.custom_action("DailyGoldCoin_BuyClayPot_Costing")
+class DailyGoldCoin_BuyClayPot_Costing(CustomAction):
+    def run(
+        self, context: Context, argv: CustomAction.RunArg
+    ) -> CustomAction.RunResult:
+
+        argv_dict: dict = json.loads(argv.custom_action_param)
+        times = int(argv_dict.get("times", 10))
+        for i in range(times):
+            if context.tasker.stopping:
+                logger.info("检测到停止任务, 开始退出agent")
+                return CustomAction.RunResult(success=False)
+            context.run_task("DailyGoldCoin_BuyClayPot")
+
+        context.run_task("ReturnBigMap")
         return CustomAction.RunResult(success=True)

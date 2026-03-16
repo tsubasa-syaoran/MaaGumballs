@@ -265,7 +265,9 @@
         "expected": "荒野探索中",
         "post_delay": 1000,
         "timeout": 2000,
-        "next": ["BackText"]
+        "next": [
+            "BackText"
+        ]
     },
     "WildernessExplored": {
         "post_delay": 2000,
@@ -301,7 +303,9 @@
         "post_delay": 1000,
         "timeout": 2000,
         "action": "Click",
-        "next": ["BackText"]
+        "next": [
+            "BackText"
+        ]
     },
     "SendLizards": {
         "recognition": "TemplateMatch",
@@ -326,7 +330,9 @@
             175,
             33
         ],
-        "next": ["BackText"]
+        "next": [
+            "BackText"
+        ]
     },
     "SendLizards_start": {
         "post_delay": 1000,
@@ -385,7 +391,9 @@
             175,
             33
         ],
-        "next": ["BackText"]
+        "next": [
+            "BackText"
+        ]
     },
     "AlchemySignboard_Start": {
         "recognition": "OCR",
@@ -658,7 +666,9 @@
         "post_delay": 1000,
         "timeout": 2000,
         "action": "Click",
-        "next": ["RuinsExplore_Fight"]
+        "next": [
+            "RuinsExplore_Fight"
+        ]
     },
     "RuinsExplore_Fight": {
         "recognition": "OCR",
@@ -950,7 +960,9 @@
         "next": [
             "WeeklyRaid_Attack_Success"
         ],
-        "on_error": ["TaskFailNotify"]
+        "on_error": [
+            "TaskFailNotify"
+        ]
     },
     "WeeklyRaid_Attack_Success": {
         "recognition": "OCR",
@@ -1002,6 +1014,149 @@
             10
         ],
         "post_delay": 1000,
+        "timeout": 2000
+    },
+    "DailyGoldCoin": {
+        "next": [
+            "DailyGoldCoin_Start",
+            "[JumpBack]AlchemyReward",
+            "[JumpBack]MapSwipeDownToUp"
+        ]
+    },
+    "DailyGoldCoin_Start": {
+        "recognition": "TemplateMatch",
+        "template": "dailyTask/GumballsCamp.png",
+        "roi": [
+            260,
+            163,
+            193,
+            879
+        ],
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 1500,
+        "next": [
+            "DailyGoldCoin_BuyClayPot_Costing",
+            "[JumpBack]ConfirmButton",
+            "[JumpBack]ClickCenterBelow_500ms"
+        ]
+    },
+    "DailyGoldCoin_OpenShop": {
+        "recognition": "TemplateMatch",
+        "template": "dailyTask/MercenaryShop.png",
+        "roi": [
+            402,
+            498,
+            288,
+            588
+        ],
+        "action": "Click",
+        "post_delay": 500,
+        "timeout": 1500,
+        "next": [
+            "DailyGoldCoin_SwitchEarthenware"
+        ]
+    },
+    "DailyGoldCoin_SwitchEarthenware": {
+        "recognition": "OCR",
+        "expected": [
+            "购买"
+        ],
+        "roi": [
+            52,
+            941,
+            301,
+            149
+        ],
+        "action": "Click",
+        "post_delay": 500,
+        "timeout": 2000,
+        "next": []
+    },
+    "DailyGoldCoin_BuyClayPot_Costing": {
+        "action": "Custom",
+        "custom_action": "DailyGoldCoin_BuyClayPot_Costing",
+        "custom_action_param": {
+            "times": 10
+        },
+        "post_delay": 500,
+        "timeout": 2000
+    },
+    "DailyGoldCoin_BuyClayPot": {
+        "next": [
+            "DailyGoldCoin_BuyClayPot_10",
+            "[JumpBack]DailyGoldCoin_BuyClayPot_Kickback",
+            "[JumpBack]DailyGoldCoin_BuyClayPot_Kickback_Confirm",
+            "[JumpBack]DailyGoldCoin_BuyClayPot_Entry"
+        ],
+        "post_delay": 500,
+        "timeout": 2000
+    },
+    "DailyGoldCoin_BuyClayPot_Entry": {
+        "recognition": "TemplateMatch",
+        "template": "dailyTask/ClayPot.png",
+        "roi": [
+            114,
+            473,
+            510,
+            454
+        ],
+        "action": "Click",
+        "post_delay": 500,
+        "timeout": 2000
+    },
+    "DailyGoldCoin_BuyClayPot_10": {
+        "recognition": "OCR",
+        "expected": [
+            "购买10个"
+        ],
+        "roi": [
+            31,
+            186,
+            662,
+            872
+        ],
+        "focus": "购买土罐",
+        "action": "Click",
+        "post_delay": 500,
+        "timeout": 2000
+    },
+    "DailyGoldCoin_BuyClayPot_Kickback": {
+        "recognition": "OCR",
+        "expected": [
+            "佣兵",
+            "佣兵首领"
+        ],
+        "roi": [
+            88,
+            656,
+            548,
+            180
+        ],
+        "action": "Click",
+        "post_delay": 500,
+        "timeout": 2000
+    },
+    "DailyGoldCoin_BuyClayPot_Kickback_Confirm": {
+        "recognition": "OCR",
+        "expected": [
+            "额外奖励"
+        ],
+        "roi": [
+            101,
+            402,
+            519,
+            455
+        ],
+        "action": "Click",
+        "target": true,
+        "target_offset": [
+            0,
+            330,
+            0,
+            0
+        ],
+        "post_delay": 500,
         "timeout": 2000
     }
 }
