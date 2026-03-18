@@ -1108,13 +1108,20 @@
     "DailyGoldCoin_BuyClayPot_10": {
         "recognition": "OCR",
         "expected": [
-            "购买10个"
+            "购买1个"
         ],
         "roi": [
             31,
             186,
             662,
             872
+        ],
+        "target": true,
+        "target_offset": [
+            -275,
+            0,
+            0,
+            0
         ],
         "focus": "购买土罐",
         "action": "Click",

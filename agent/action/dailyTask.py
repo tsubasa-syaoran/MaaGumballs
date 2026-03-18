@@ -113,6 +113,11 @@ class DailyGoldCoin_BuyClayPot_Costing(CustomAction):
 
         argv_dict: dict = json.loads(argv.custom_action_param)
         times = int(argv_dict.get("times", 10))
+
+        # 1. 打开商店
+        context.run_task("DailyGoldCoin_OpenShop")
+
+        # 2. 购买 ClayPot
         for i in range(times):
             if context.tasker.stopping:
                 logger.info("检测到停止任务, 开始退出agent")
