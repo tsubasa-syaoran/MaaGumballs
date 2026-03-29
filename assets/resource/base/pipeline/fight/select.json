@@ -77,7 +77,7 @@
     "Select_WorldTree_InputBox_Click": {
         "recognition": "OCR",
         "expected": [
-            "输入"
+            "点击输入"
         ],
         "roi": [
             54,
@@ -88,6 +88,7 @@
         "action": "Click",
         "post_delay": 1200,
         "timeout": 3000,
+        "order_by": "Vertical",
         "next": [
             "Select_WorldTree_InputBox_Text"
         ]
@@ -108,10 +109,25 @@
             "搜索"
         ],
         "roi": [
-            298,
-            823,
-            123,
-            80
+            188,
+            184,
+            332,
+            107
+        ],
+        "action": "Click",
+        "post_delay": 1500,
+        "timeout": 3000,
+        "next": [
+            "Select_WorldTree_Search_Click"
+        ]
+    },
+    "Select_WorldTree_Search_Click": {
+        "recognition": "DirectHit",
+        "target": [
+            97,
+            669,
+            124,
+            123
         ],
         "action": "Click",
         "post_delay": 3000,
