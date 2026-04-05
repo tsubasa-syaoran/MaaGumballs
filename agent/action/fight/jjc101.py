@@ -465,11 +465,15 @@ class JJC101(CustomAction):
         fightUtils.handle_dragon_event("工资", context)
 
         if self.isAutoPickup:
-            logger.info("触发下楼事件")
-            fightUtils.handle_downstair_event(context)
+            self.handle_downstair_event(context)
         else:
             logger.info("触发开启自动拾取事件")
             self.handle_auto_pickup_event(context)
+
+    @timing_decorator
+    def handle_downstair_event(self, context: Context):
+        logger.info("触发下楼事件")
+        fightUtils.handle_downstair_event(context)
 
     @timing_decorator
     def handle_clearCurLayer_event(self, context: Context):

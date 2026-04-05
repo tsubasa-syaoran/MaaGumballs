@@ -455,16 +455,18 @@ class FightProcessor:
                     context.tasker.controller.post_click(x + w // 2, y + h // 2).wait()
                     self.visited[r][c] += 1
                     checkGridCnt += 1
+                    # time.sleep(0.005)
                     if self.layers > 110 and center_detected:
                         # 开启了一个怪物地板
                         logger.debug("点击了一个怪物地板")
                         return checkGridCnt
-                    # time.sleep(0.03)
         return checkGridCnt
 
     def handle_dragon_encounter(self, context: Context, img):
         """处理遇到神龙的逻辑"""
-        if context.run_recognition("Fight_FindDragon", img).hit and self.isCheckDragon:
+        if self.isCheckDragon:
+            return False
+        if context.run_recognition("Fight_FindDragon", img).hit:
             logger.info("是神龙,俺,俺们有救了！！！")
             fightUtils.dragonwish(self.targetWish, context)
             logger.info("神龙带肥家lo~")
