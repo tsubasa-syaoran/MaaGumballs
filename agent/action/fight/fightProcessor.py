@@ -244,7 +244,7 @@ class FightProcessor:
             return 0
 
     def checkMonster(self, context: Context) -> bool:
-        logger.debug(f"{self.visited}")
+        # logger.debug(f"{self.visited}")
         img = context.tasker.controller.post_screencap().wait().get()
         monster_count = 0
 
@@ -281,7 +281,7 @@ class FightProcessor:
                     context,
                 ):
                     monster_count += 1
-                    logger.debug(f"检测({r + 1},{c + 1})有怪物: {x}, {y}, {w}, {h}")
+                    # logger.debug(f"检测({r + 1},{c + 1})有怪物: {x}, {y}, {w}, {h}")
 
                     # 检查是否可以被攻击到
                     can_attack = False
@@ -292,9 +292,9 @@ class FightProcessor:
                             if self.visited[new_r][new_c] == 0:
                                 continue
                             else:
-                                logger.debug(
-                                    f"({new_r + 1},{new_c + 1})已被访问, 可以攻击到({r + 1},{c + 1})的怪物"
-                                )
+                                # logger.debug(
+                                #     f"({new_r + 1},{new_c + 1})已被访问, 可以攻击到({r + 1},{c + 1})的怪物"
+                                # )
                                 can_attack = True
                                 break
 
@@ -317,7 +317,7 @@ class FightProcessor:
             _, r, c, x, y, w, h = monster
             # 确认攻击后再标记已访问
             self.visited[r][c] += 1
-            logger.debug(f"攻击怪物({r + 1},{c + 1})，距离门：{monster[0]}")
+            # logger.debug(f"攻击怪物({r + 1},{c + 1})，距离门：{monster[0]}")
             for _ in range(self.hit_monster_count):
                 context.tasker.controller.post_click(x + w // 2, y + h // 2).wait()
                 # time.sleep(0.05)
@@ -457,7 +457,6 @@ class FightProcessor:
                     checkGridCnt += 1
                     # time.sleep(0.005)
                     if self.layers > 110 and center_detected:
-                        # 开启了一个怪物地板
                         logger.debug("点击了一个怪物地板")
                         return checkGridCnt
         return checkGridCnt

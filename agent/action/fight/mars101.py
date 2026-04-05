@@ -19,8 +19,6 @@ import time
 import json
 
 
-
-
 @AgentServer.custom_action("Mars101")
 class Mars101(CustomAction):
     def __init__(self):
