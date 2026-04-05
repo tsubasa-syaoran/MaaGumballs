@@ -1265,6 +1265,73 @@ def timing_decorator(func):
     return wrapper
 
 
+def timed(name: str):
+    """计时装饰器工厂，包装任意函数/方法调用
+
+    用法:
+        @timed("cast_静电场")
+        def cast_静电场(context):
+            return fightUtils.cast_magic("气", "静电场", context)
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            start_time = time.perf_counter()
+            result = func(*args, **kwargs)
+            duration = time.perf_counter() - start_time
+
+            if func.__name__ in function_time_records:
+                function_time_records[func.__name__]["count"] += 1
+                function_time_records[func.__name__]["total_time"] += duration
+            else:
+                function_time_records[func.__name__] = {
+                    "count": 1,
+                    "total_time": duration,
+                }
+
+            avg_time = (
+                function_time_records[func.__name__]["total_time"]
+                / function_time_records[func.__name__]["count"]
+            )
+            logger.info(
+                f"[timed:{name}] {func.__name__} cost {duration*1000:.2f}ms / avg {avg_time*1000:.2f}ms"
+            )
+
+            return result
+
+        return wrapper
+
+    return decorator
+
+
+def timed_block(name: str, func: callable):
+    """计时函数片段，包装 lambda 或任意 callable
+
+    用法:
+        timed_block("cast_静电场", lambda: fightUtils.cast_magic("气", "静电场", context))
+        timed_block("check_hp", lambda: self.Check_DefaultStatus(context))
+    """
+    start_time = time.perf_counter()
+    result = func()
+    duration = time.perf_counter() - start_time
+
+    if name in function_time_records:
+        function_time_records[name]["count"] += 1
+        function_time_records[name]["total_time"] += duration
+    else:
+        function_time_records[name] = {"count": 1, "total_time": duration}
+
+    avg_time = (
+        function_time_records[name]["total_time"] / function_time_records[name]["count"]
+    )
+    logger.info(
+        f"[timed:{name}] cost {duration*1000:.2f}ms / avg {avg_time*1000:.2f}ms"
+    )
+
+    return result
+
+
 # 获取统计信息的函数
 def get_time_statistics():
     """返回所有函数的执行时间统计信息，返回后清空统计信息"""
