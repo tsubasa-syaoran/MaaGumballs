@@ -15,84 +15,84 @@
         {
             "name": "官服",
             "path": [
-                "{PROJECT_DIR}/resource/base"
+                "./resource/base"
             ]
         },
         {
             "name": "xiaomi",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/mi"
+                "./resource/base",
+                "./resource/mi"
             ]
         },
         {
             "name": "huawei",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/huawei"
+                "./resource/base",
+                "./resource/huawei"
             ]
         },
         {
             "name": "oppo",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/oppo"
+                "./resource/base",
+                "./resource/oppo"
             ]
         },
         {
             "name": "vivo",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/vivo"
+                "./resource/base",
+                "./resource/vivo"
             ]
         },
         {
             "name": "4399",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/4399"
+                "./resource/base",
+                "./resource/4399"
             ]
         },
         {
             "name": "bilibili",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/bilibili"
+                "./resource/base",
+                "./resource/bilibili"
             ]
         },
         {
             "name": "hk_tw",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/hk_tw"
+                "./resource/base",
+                "./resource/hk_tw"
             ]
         },
         {
             "name": "test",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/test"
+                "./resource/base",
+                "./resource/test"
             ]
         },
         {
             "name": "test-青瓷",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/test-qc"
+                "./resource/base",
+                "./resource/test-qc"
             ]
         },
         {
             "name": "tencent",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/tencent"
+                "./resource/base",
+                "./resource/tencent"
             ]
         },
         {
             "name": "9u",
             "path": [
-                "{PROJECT_DIR}/resource/base",
-                "{PROJECT_DIR}/resource/9u"
+                "./resource/base",
+                "./resource/9u"
             ]
         }
     ],
@@ -100,7 +100,7 @@
         "child_exec": "python",
         "child_args": [
             "-u",
-            "{PROJECT_DIR}/agent/main.py"
+            "./agent/main.py"
         ]
     },
     "task": [

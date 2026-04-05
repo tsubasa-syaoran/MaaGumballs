@@ -509,12 +509,12 @@ class FightProcessor:
             else:
                 fail_check_grid_cnt = 0
 
-            context.run_task(
-                "WaitStableNode_ForOverride",
-                pipeline_override={
-                    "WaitStableNode_ForOverride": {"pre_wait_freezes": {"time": 30}}
-                },
-            )
+            # context.run_task(
+            #     "WaitStableNode_ForOverride",
+            #     pipeline_override={
+            #         "WaitStableNode_ForOverride": {"pre_wait_freezes": {"time": 30}}
+            #     },
+            # )
             # 检测怪物并进行攻击
             if not self.checkMonster(context):
                 fail_check_monster_cnt += 1

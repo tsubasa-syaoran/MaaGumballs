@@ -42,13 +42,6 @@
             126
         ],
         "action": "Click",
-        "target": true,
-        "target_offset": [
-            0,
-            0,
-            0,
-            -63
-        ],
         "next": [
             "DailyTaskSelect"
         ]
