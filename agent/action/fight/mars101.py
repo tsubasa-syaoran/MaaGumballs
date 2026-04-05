@@ -981,7 +981,7 @@ class Mars101(CustomAction):
         # MarsDagger : ExchangeForDagger
         # MarsHighLevelStaff : ExchangeForHighlevel
         # MarsMagicNecklace : ExchangeForHighlevel
-        # 大于10层才处理交换商店事件
+        # 大于30层才处理交换商店事件
         target = None
         exchange_dir = "fight/Mars/MarsExchangeDir/ExchangeForDagger"
         if self.layers >= 30 and self.layers % 10 == 0:
