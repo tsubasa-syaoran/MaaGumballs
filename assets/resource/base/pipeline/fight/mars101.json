@@ -375,7 +375,7 @@
             394
         ],
         "action": "Click",
-        "post_delay": 1000,
+        "post_delay": 200,
         "timeout": 2000
     },
     "Mars_Inter_Confirm_Pickup": {
@@ -439,7 +439,7 @@
             839
         ],
         "action": "Click",
-        "post_delay": 1000,
+        "post_delay": 500,
         "timeout": 2000,
         "next": [
             "Mars_Inter_Confirm_Success"

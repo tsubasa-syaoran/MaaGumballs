@@ -127,21 +127,13 @@ class MarsEventDispatcher:
     def handle_MarsReward_event(self, context: Context, image=None):
         normalReward = self.mars.layers % 2 == 1
         bossReward = self.mars.layers >= 30 and self.mars.layers % 10 == 0
-        if not (normalReward or bossReward):
+        if not (normalReward or bossReward) or image is None:
             return True
-        if image is None:
-            image = context.tasker.controller.post_screencap().wait().get()
 
         if normalReward:
             self.mars.handle_MarsStele_event(context, image)
-            context.run_task(
-                "WaitStableNode_ForOverride",
-                pipeline_override={
-                    "WaitStableNode_ForOverride": {"pre_wait_freezes": {"time": 100}}
-                },
-            )
             self.mars.Check_GridAndMonster(context)
-            for _ in range(5):
+            for _ in range(3):
                 if not context.run_recognition("Mars_Reward", image).hit:
                     logger.debug("当前截图中奖励可能被遮挡, 再次截图尝试")
                     context.run_task(
@@ -154,16 +146,17 @@ class MarsEventDispatcher:
                     )
                     image = context.tasker.controller.post_screencap().wait().get()
                 else:
-                    break
-        if normalReward and context.run_recognition("Mars_Reward", image).hit:
-            logger.info("触发Mars奖励事件")
-            mars_reward_detail = context.run_task("Mars_Reward")
-            if mars_reward_detail and mars_reward_detail.nodes[0].completed:
-                for node in mars_reward_detail.nodes:
-                    if node.name == "Mars_Inter_Confirm_Fail":
-                        logger.info("领取Mars奖励失败, 为了防止卡死, 跳过这次领取")
-                        return False
-            return True
+                    logger.info("触发Mars奖励事件")
+                    mars_reward_detail = context.run_task("Mars_Reward")
+                    if not (
+                        mars_reward_detail and mars_reward_detail.nodes[0].completed
+                    ):
+                        return True
+                    for node in mars_reward_detail.nodes:
+                        if node.name == "Mars_Inter_Confirm_Fail":
+                            logger.info("领取Mars奖励失败, 为了防止卡死, 跳过这次领取")
+                            return False
+                    return True
 
         if bossReward and context.run_recognition("Mars_BossReward", image).hit:
             logger.info("触发MarsBoss奖励事件")
@@ -183,65 +176,67 @@ class MarsEventDispatcher:
             return True
 
         if bodyRecoDetail := context.run_recognition("Mars_Body", image):
-            if bodyRecoDetail.hit:
-                logger.info("触发Mars摸金事件")
-                for body in bodyRecoDetail.filtered_results:
-                    box = body.box
-                    context.tasker.controller.post_click(
-                        box[0] + box[2] // 2,
-                        box[1] + box[3] // 2,
-                    ).wait()
-                    context.run_task(
-                        "WaitStableNode_ForOverride",
-                        pipeline_override={
-                            "WaitStableNode_ForOverride": {
-                                "pre_wait_freezes": {"time": 100}
-                            }
-                        },
-                    )
-                    img = context.tasker.controller.post_screencap().wait().get()
-                    if context.run_recognition(
-                        "Mars_Inter_Confirm_Success",
-                        img,
-                    ).hit:
-                        context.run_task("Mars_Inter_Confirm_Success")
-                    elif context.run_recognition("Mars_Inter_Confirm_Pickup", img).hit:
-                        logger.info("触发墓碑事件")
-                        context.run_task("Mars_Inter_Confirm_Pickup")
-                        time.sleep(3)
-                        context.run_task("Mars_Inter_Confirm_Success")
-                        time.sleep(3)
-                        context.run_task("Mars_Inter_Confirm_Success")
-                    else:
-                        logger.info("可能在夹层中有怪物没有清理")
-                        context.run_task("Mars_Inter_Confirm_Fail")
-                        return False
+            if not bodyRecoDetail.hit:
                 return True
-        for _ in range(3):
-            if self.mars.astrological_title_para == False:
-                break
-            if self.mars.layers == 99 or self.mars.layers == self.mars.target_leave_layer_para:
-                context.run_task("Screenshot")
+
+            logger.info("触发Mars摸金事件")
+            for body in bodyRecoDetail.filtered_results:
+                box = body.box
+                context.tasker.controller.post_click(
+                    box[0] + box[2] // 2,
+                    box[1] + box[3] // 2,
+                ).wait()
+                context.run_task(
+                    "WaitStableNode_ForOverride",
+                    pipeline_override={
+                        "WaitStableNode_ForOverride": {
+                            "pre_wait_freezes": {"time": 100}
+                        }
+                    },
+                )
+                img = context.tasker.controller.post_screencap().wait().get()
                 if context.run_recognition(
-                    "Mars_Tomb", context.tasker.controller.post_screencap().wait().get()
+                    "Mars_Inter_Confirm_Success",
+                    img,
                 ).hit:
+                    context.run_task("Mars_Inter_Confirm_Success")
+                elif context.run_recognition("Mars_Inter_Confirm_Pickup", img).hit:
                     logger.info("触发墓碑事件")
-                    context.run_task("Mars_Tomb")
+                    context.run_task("Mars_Inter_Confirm_Pickup")
                     time.sleep(3)
                     context.run_task("Mars_Inter_Confirm_Success")
-                    context.run_task("Fight_ReturnMainWindow")
-                    break
+                    time.sleep(3)
+                    context.run_task("Mars_Inter_Confirm_Success")
                 else:
-                    time.sleep(1)
-            else:
+                    logger.info("可能在夹层中有怪物没有清理")
+                    context.run_task("Mars_Inter_Confirm_Fail")
+                    return False
+            return True
+        for _ in range(3):
+            temp_is99 = self.mars.layers == 99
+            temp_leave = self.mars.layers == self.mars.target_leave_layer_para
+            temp_astrological = self.mars.astrological_title_para
+            if not (temp_is99 or temp_leave or temp_astrological):
                 break
+
+            context.run_task("Screenshot")
+            if context.run_recognition(
+                "Mars_Tomb", context.tasker.controller.post_screencap().wait().get()
+            ).hit:
+                logger.info("触发墓碑事件")
+                context.run_task("Mars_Tomb")
+                time.sleep(3)
+                context.run_task("Mars_Inter_Confirm_Success")
+                context.run_task("Fight_ReturnMainWindow")
+                break
+            else:
+                logger.info("没有触发墓碑事件, 等待1秒后重试")
+                time.sleep(1)
         return True
 
     @timing_decorator
     def handle_MarsStele_event(self, context: Context, image):
-        if self.mars.layers >= 30 and self.mars.layers % 10 == 0:
-            return True
-        if self.mars.layers % 2 == 1 and context.run_recognition("Mars_Stele", image).hit:
+        if context.run_recognition("Mars_Stele", image).hit:
             logger.info("触发Mars斩断事件")
             context.run_task("Mars_Stele")
             return True

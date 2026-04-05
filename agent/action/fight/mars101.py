@@ -137,7 +137,7 @@ class Mars101(CustomAction):
         context.run_task(
             "WaitStableNode_ForOverride",
             pipeline_override={
-                "WaitStableNode_ForOverride": {"pre_wait_freezes": {"time": 200}}
+                "WaitStableNode_ForOverride": {"pre_wait_freezes": {"time": 100}}
             },
         )
         processor = fightProcessor.FightProcessor()
