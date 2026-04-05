@@ -1,5 +1,4 @@
 from action.fight import jjc101
-from action.fight import mars101
 from action.fight import getKeyFromHole
 from action.fight import timeSpaceDomain
 from action.activity import kairo_maze1
@@ -13,3 +12,12 @@ from action import ppOverride
 from action import sky
 
 from action.divineForgeLand import someTrick
+
+from action.fight import mars101
+from action.mars import mars_boss
+from action.mars import mars_earth_gate
+from action.mars import mars_events
+from action.mars import mars_settlement
+from action.mars import mars_special_layer
+from action.mars import mars_title
+from action.mars import mars_hp
