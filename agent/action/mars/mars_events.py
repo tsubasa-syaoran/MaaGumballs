@@ -127,13 +127,21 @@ class MarsEventDispatcher:
     def handle_MarsReward_event(self, context: Context, image=None):
         normalReward = self.mars.layers % 2 == 1
         bossReward = self.mars.layers >= 30 and self.mars.layers % 10 == 0
-        if not (normalReward or bossReward) or image is None:
+        if not (normalReward or bossReward):
             return True
+        if image is None:
+            image = context.tasker.controller.post_screencap().wait().get()
 
         if normalReward:
             self.mars.handle_MarsStele_event(context, image)
+            context.run_task(
+                "WaitStableNode_ForOverride",
+                pipeline_override={
+                    "WaitStableNode_ForOverride": {"pre_wait_freezes": {"time": 100}}
+                },
+            )
             self.mars.Check_GridAndMonster(context)
-            for _ in range(3):
+            for _ in range(5):
                 if not context.run_recognition("Mars_Reward", image).hit:
                     logger.debug("当前截图中奖励可能被遮挡, 再次截图尝试")
                     context.run_task(
@@ -146,17 +154,16 @@ class MarsEventDispatcher:
                     )
                     image = context.tasker.controller.post_screencap().wait().get()
                 else:
-                    logger.info("触发Mars奖励事件")
-                    mars_reward_detail = context.run_task("Mars_Reward")
-                    if not (
-                        mars_reward_detail and mars_reward_detail.nodes[0].completed
-                    ):
-                        return True
+                    break
+            if context.run_recognition("Mars_Reward", image).hit:
+                logger.info("触发Mars奖励事件")
+                mars_reward_detail = context.run_task("Mars_Reward")
+                if mars_reward_detail and mars_reward_detail.nodes[0].completed:
                     for node in mars_reward_detail.nodes:
                         if node.name == "Mars_Inter_Confirm_Fail":
                             logger.info("领取Mars奖励失败, 为了防止卡死, 跳过这次领取")
                             return False
-                    return True
+                return True
 
         if bossReward and context.run_recognition("Mars_BossReward", image).hit:
             logger.info("触发MarsBoss奖励事件")
