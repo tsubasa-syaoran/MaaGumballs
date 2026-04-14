@@ -457,3 +457,4 @@ grid/*
 # Log
 logs
 python/
+settings.local.json
