@@ -69,9 +69,9 @@ def read_config() -> bool:
                     ).strip()
                 elif message_type == "PushPlus":
                     config["pushplus_token"] = decrypt(config["pushplus_token"]).strip()
-                elif message_type == "telegram":
-                    config["telegram_token"] = decrypt(config["telegram_token"]).strip()
-                    config["telegram_chat_id"] = decrypt(config["telegram_chat_id"]).strip()
+                elif message_type == "Telegram":
+                    config["telegram_token"] = decrypt(config["ExternalNotificationTelegramBotToken"]).strip()
+                    config["telegram_chat_id"] = decrypt(config["ExternalNotificationTelegramChatId"]).strip()
             logger.debug("配置文件解密成功！")
             return True
     except Exception:
@@ -308,7 +308,7 @@ def send_telegram_message(dp: dict, text:str):
     """发送消息到 Telegram"""
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
     try:
-        resp = requests.post(url, data={"chat_id": chat_id, "text": text})
+        resp = post_request(url, data={"chat_id": chat_id, "text": text})
         resp.raise_for_status()
     except Exception as e:
         print(f"发送 Telegram 消息失败: {e}")
