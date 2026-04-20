@@ -69,6 +69,9 @@ def read_config() -> bool:
                     ).strip()
                 elif message_type == "PushPlus":
                     config["pushplus_token"] = decrypt(config["pushplus_token"]).strip()
+                elif message_type == "telegram":
+                    config["telegram_token"] = decrypt(config["telegram_token"]).strip()
+                    config["telegram_chat_id"] = decrypt(config["telegram_chat_id"]).strip()
             logger.debug("配置文件解密成功！")
             return True
     except Exception:
@@ -299,6 +302,17 @@ def send_dingTalk(dp: dict, title: str, text: str) -> bool:
             logger.info(f"消息推送失败: { str(e) }")
             return False
 
+def send_telegram_message(dp: dict, text:str):
+    bot_token = dp.get("telegram_token")
+    chat_id = dp.get("telegram_chat_id")
+    """发送消息到 Telegram"""
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    try:
+        resp = requests.post(url, data={"chat_id": chat_id, "text": text})
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"发送 Telegram 消息失败: {e}")
+
 
 def send_message(title: str, text: str) -> bool:
     """
@@ -329,6 +343,8 @@ def send_message(title: str, text: str) -> bool:
                 send_qmsg(config, title, text=text)
             elif message_type == "DingTalk":
                 send_dingTalk(config, title, text=text)
+            elif message_type == "telegram":
+                send_telegram_message(config, text=text)
             else:
                 logger.info("未配置消息类型或暂不支持此消息类型！")
                 return False
