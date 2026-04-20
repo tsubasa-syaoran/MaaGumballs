@@ -343,7 +343,7 @@ def send_message(title: str, text: str) -> bool:
                 send_qmsg(config, title, text=text)
             elif message_type == "DingTalk":
                 send_dingTalk(config, title, text=text)
-            elif message_type == "telegram":
+            elif message_type == "Telegram":
                 send_telegram_message(config, text=text)
             else:
                 logger.info("未配置消息类型或暂不支持此消息类型！")
